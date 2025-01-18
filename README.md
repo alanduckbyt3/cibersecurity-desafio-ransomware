@@ -73,6 +73,8 @@ pip install -r requirements.txt
   ```
   Isso permitirá executar scripts locais apenas na sessão atual, sem alterar a política global.
 - Certifique-se de que os arquivos estejam no mesmo diretório do projeto antes de executar o script.
+- Na função completa do `encrypter_main.py`, antivírus podem detectar a função `encrypt` como maliciosa devido ao seu comportamento. Considere usá-la em um ambiente seguro, como máquinas virtuais.
+  Ou, você pode colocar o arquivo na lista de exclusão, caso prefira.
 
 ---
 
