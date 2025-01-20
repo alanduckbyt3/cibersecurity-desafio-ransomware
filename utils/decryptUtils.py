@@ -1,7 +1,7 @@
 import os
 from Crypto.Cipher import AES
 from tqdm import tqdm
-from .file_management import clear_term
+from .file_management import clear
 from .file_management import check_permissions
 from .logging import log
 
@@ -49,7 +49,7 @@ def decrypt_files(directory, crypto_key, suffix, valid_extensions):
   :param valid_extensions: Lista de extenções de arquivos válidos.
   """
 
-  clear_term()
+  clear()
   files = [
     file for file in os.listdir(directory)
     if file.endswith(suffix) and any(file.endswith(ext + suffix) for ext in valid_extensions)
